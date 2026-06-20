@@ -1,7 +1,7 @@
 name: Build Android APK
 
 on:
-  workflow_dispatch: # This allows you to click a "Run" button on GitHub
+  workflow_dispatch:
 
 jobs:
   build:
@@ -23,8 +23,13 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Initialize Safe Web Folder
+        run: |
+          mkdir -p www
+          echo "<html><head><title>Loading...</title></head><body style='background:#000;'></body></html>" > www/index.html
+
+      - name: Force Install Capacitor Dependencies
+        run: npm install @capacitor/core@latest @capacitor/android@latest @capacitor/cli@latest
 
       - name: Create Android Project
         run: |
@@ -34,10 +39,11 @@ jobs:
       - name: Compile Android APK
         run: |
           cd android
+          chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Upload APK File
-        uses: actions/upload-artifact@v4 # 👈 Fixed to v4
+        uses: actions/upload-artifact@v4
         with:
           name: nandurbar-driver-app
           path: android/app/build/outputs/apk/debug/app-debug.apk
