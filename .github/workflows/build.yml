@@ -9,27 +9,46 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Setup Java (Required for Android)
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Initialize Safe Web Folder
+      - name: Auto-Generate Perfect Configuration Files
         run: |
           mkdir -p www
-          echo "<html><head><title>Loading...</title></head><body style='background:#000;'></body></html>" > www/index.html
+          echo "<html><body>Loading Dashboard...</body></html>" > www/index.html
+          
+          echo '{
+            "name": "nandurbar-driver",
+            "version": "1.0.0",
+            "dependencies": {
+              "@capacitor/android": "^6.0.0",
+              "@capacitor/core": "^6.0.0"
+            },
+            "devDependencies": {
+              "@capacitor/cli": "^6.0.0"
+            }
+          }' > package.json
+          
+          echo '{
+            "appId": "com.nandurbarbazar.driver",
+            "appName": "Nandurbar Driver",
+            "webDir": "www",
+            "server": {
+              "url": "https://gocart-delta.vercel.app/driver",
+              "cleartext": true
+            }
+          }' > capacitor.config.json
 
-      - name: Force Install Capacitor Dependencies
-        run: npm install @capacitor/core@latest @capacitor/android@latest @capacitor/cli@latest
+      - name: Install Dependencies
+        run: npm install
 
       - name: Create Android Project
         run: |
