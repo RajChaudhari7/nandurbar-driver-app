@@ -1,0 +1,14 @@
+{
+  "name": "nandurbar-driver",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'No build step'"
+  },
+  "dependencies": {
+    "@capacitor/core": "latest",
+    "@capacitor/android": "latest"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "latest"
+  }
+}

@@ -1,0 +1,9 @@
+{
+    "appId": "com.nandurbarbazar.driver",
+    "appName": "Nandurbar Driver",
+    "webDir": "www",
+    "server": {
+        "url": "https://gocart-delta.vercel.app/driver",
+        "cleartext": true
+    }
+}
